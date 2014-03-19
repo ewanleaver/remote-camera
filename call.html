@@ -122,7 +122,7 @@
 		    	$('#make-connection').hide();
 		    	$('#make-call').show();
 
-
+		    	/*
 		    	// Select connection handler.
 		    	commandBox.on('click', function() {
 		    		if ($(this).attr('class').indexOf('active') === -1) {
@@ -131,16 +131,28 @@
 		        		$(this).removeClass('active');
 		      		}
 		    	});
+*/
 
 		    	$('.filler').hide();
-		    	$('#connections').append(commandBox);
+		    	//$('#connections').append(commandBox);
 
-		    	//c.on('data', function(data) { messages.append('<div><span class="peer">  ' + c.peer + '</span>: ' + data + '</div>'); });
+		    	c.on('data', function(data) {
+		    		if (data === "call-me") {
+	      				$('.status-area').append('<div class="peer">Request to share camera</div>');
+
+	      				var call = peer.call(c.peer, window.localStream);
+
+	        			//step3(call);
+	        			$('#step2').hide();
+	        		} else if (data === "shutter") {
+	        			
+	        		}
+      			});
 
 		    	// Close the call
 		    	c.on('close', function() {
-		      		alert('Peer ' + c.peer + ' has disconnected.');
-		        	commandBox.remove();
+		      		$('.status-area').append('<div class="messages"><em>Peer ' + c.peer + ' has disconnected</em></div>');
+		        	//commandBox.remove();
 		        	if ($('.connection').length === 0) {
 		        		$('.filler').show();
 		        	}
@@ -193,34 +205,6 @@
 		  	});
 
 		  	// Request peer's camera
-		  	/*$('#make-call').click(function() {
-		  		
-		  		var peerId = $('.status-area').attr('id');
-		  		//$('.status-area').append('<div class="you"><em>Test with ' peerId '</em></div>');
-		  		var conns = peer.connections[peerId];
-		  		//var c = peer.connections[$('#callto-id').val()];
-
-		  		for (var i = 0, ii = conns.length; i < ii; i += 1) {
-		          	var conn = conns[i];
-		          	$('.status-area').append('<div class="you"><em>Test</em></div>');
-		        }
-		  		
-
-		  		var msg = "call-me";
-		  		if (c.label === 'call') {
-		  			$('.status-area').append('<div class="you"><em>Requesting camera on ' + c.label + '</em></div>');
-		  			c.send(msg);
-		    	}
-			});*/
-
-		  	// Close a connection.
-		  	$('#close').click(function() {
-		    	eachActiveConnection(function(c) {
-		      		c.close();
-		    	});
-		  	});
-
-		  	// Send a chat message to all active connections.
 			$('#make-call').click(function() {
 			    //e.preventDefault();
 			    // For each active connection, send the message.
@@ -232,6 +216,13 @@
 			      	}
 			    });
 			});
+
+		  	// Close a connection.
+		  	$('#close').click(function() {
+		    	eachActiveConnection(function(c) {
+		      		c.close();
+		    	});
+		  	});
 
 		  	// Goes through each active peer and calls FN on its connections.
 			function eachActiveConnection(fn) {
