@@ -42,32 +42,6 @@ peer.on('error', function(err){
 		step2();
 });
 
-// Click handlers setup
-$(function(){
-	// Defined in connect()
-		/*$('#make-call').click(function(){
-		// Initiate a call!
-		var call = peer.call($('#callto-id').val(), window.localStream);
-
-		step3(call);
-		$('#step2').hide();
-		});*/
-
-		$('#end-call').click(function(){
-		window.existingCall.close();
-		step2();
-		});
-		/*
-		// Retry if getUserMedia fails
-		$('#step1-retry').click(function(){
-		$('#step1-error').hide();
-		step1();
-		});
-	*/
-		// Get things started
-		step1();
-});
-
 function step1() {
 		// Get audio/video stream
 		navigator.getUserMedia({audio: false, video: true}, function(stream){
@@ -104,9 +78,6 @@ function step3 (call) {
     $('.connected-ui').show();
 		$('#step3').show();
 }
-
-// Await connections from others
-peer.on('connection', connect); // Calls the connect function
 
 // Handle a connection object.
 function connect(c) {
@@ -242,6 +213,14 @@ $(document).ready(function() {
 	$('.connected-ui').hide();
 	$('.sharing-ui').hide();
 
+	// Get things started
+	step1();
+
+	// Await connections from others
+	peer.on('connection', connect); // Calls the connect function
+
+	// Click handlers
+
 	// Connect to a peer
 	$('#make-connection').click(function() {
     	requestedPeer = $('#callto-id').val();
@@ -292,6 +271,11 @@ $(document).ready(function() {
 	      	}
 	    });
 
+	});
+
+	$('#end-call').click(function(){
+		window.existingCall.close();
+		step2();
 	});
 
   	// Close a connection.

@@ -9,6 +9,15 @@
 	<script type="text/javascript" src="https://skyway.io/dist/0.3/peer.js"></script>
 	<!--<script type="text/javascript" src="js/bootstrap.js"></script>-->
 	<script type="text/javascript" src="js/remote-camera.js"></script>
+  <script>
+
+    $(document).ready(function() {
+
+      $('#picture').hide();
+
+    });
+
+  </script>
 </head>
 
 <body>
@@ -36,27 +45,23 @@
         	</div>-->
 
         	<!-- Connect to target device -->
+          <div id="floating" class="unconnected-ui">
+            <span style="font-size:30px; color:#222222; text-align:center">Camera ID</span><br>
+            <span id="my-id" style="font-size:40px; color:#555555">...</span>
+          </div>
+
         	<div id="step2">
         		<div style="float:left; padding-top:16px; padding-left: 20px; padding-right: 50px">
 
           			<div class="unconnected-ui" style="z-index: 0; position:relative">
-          				<span style="font-size:20px">Connect to device</span><br>
-            			<input type="text" placeholder="Connect to user id..." id="callto-id">
-            			<input class="button" type="button" id="make-connection" value="Connect">
-            			<input class="button" type="button" id="make-call" value="Request camera">
+          				
           			</div>
-          			<div class="connected-ui" style="z-index: 0; position:relative">
-          				<span style="font-size:20px">Connected to device</span><br>
-          				<input class="button" type="button" id="end-call" value="End Call">
-          				<input class="button" type="button" id="take-photo" value="Take Photo">
-          			</div>
+
           			<div class="sharing-ui" style="z-index: 0; position:relative">
           				<span style="font-size:20px; color:#cc0000">Sharing Camera</span><br>
           				<input class="button" type="button" id="end-call" value="End Call">
           			</div>
-          			<div style="position:fixed; top:580px">
-	        			<p>Your id: <span id="my-id" style="color:#AAAAAA">...</span></p>
-	          			<p>Share this id with others so they can connect with you.</p>
+	          			
 	          		</div>
 	          		
           		</div>

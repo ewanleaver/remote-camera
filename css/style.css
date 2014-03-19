@@ -77,3 +77,22 @@
 
 }
 
+#floating {
+
+	height: 150px;
+	width: 250px;
+	border-radius: 10px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: Tahoma;
+
+	position: absolute;
+	background-color: #DDDDDD;
+	opacity: 0.9;
+	left: 50%;
+	margin-left: -125px;
+	top: 50%;
+	margin-top: -75px;
+
+}
+
