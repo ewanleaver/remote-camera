@@ -1,0 +1,298 @@
+<!DOCTYPE HTML> 
+<html lang="en"> 
+<head>
+	<title>Generic WebApp</title>
+
+	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script type="text/javascript" src="https://skyway.io/dist/0.3/peer.js"></script>
+
+	<script>
+	 	var SKYWAY_APIKEY = "4362638a-9e84-11e3-9939-47b360702393";
+
+		// Media compatability
+	    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+
+		// Connect to Skyway, have server assign an ID instead of providing one
+		var peer = new Peer ({ key: SKYWAY_APIKEY }); // Skyway API key
+
+		// Track all connections
+		var connectedPeers = {};
+
+		// Show this peer's ID.
+		peer.on('open', function(id){
+			console.log('My peer ID is: ' + id);
+		  	$('#my-id').text(id); // Instead assign it to HTML id my-id
+		});
+
+    	// Receiving a call
+    	peer.on('call', function(call){
+      		// Answer the call automatically (instead of prompting user) for demo purposes
+      		//call.answer(window.localStream);
+      		call.answer();
+      		step3(call);
+    	});
+
+    	peer.on('error', function(err){
+      		alert(err.message);
+      		// Return to step 2 if error occurs
+      		step2();
+    	});
+
+    	// Click handlers setup
+    	$(function(){
+      		$('#make-call').click(function(){
+        		// Initiate a call!
+        		var call = peer.call($('#callto-id').val(), window.localStream);
+
+        		step3(call);
+        		$('#step2').hide();
+      		});
+
+      		$('#end-call').click(function(){
+        		window.existingCall.close();
+        		step2();
+      		});
+
+      		// Retry if getUserMedia fails
+      		$('#step1-retry').click(function(){
+        		$('#step1-error').hide();
+        		step1();
+      		});
+
+      		// Get things started
+      		step1();
+    	});
+
+    	function step1() {
+      		// Get audio/video stream
+      		navigator.getUserMedia({audio: true, video: true}, function(stream){
+        		// Set your video displays
+        		//$('#my-video').prop('src', URL.createObjectURL(stream));
+
+        		window.localStream = stream;
+        		step2();
+      		}, function(){ $('#step1-error').show(); });
+    	}
+
+    	function step2 () {
+      		$('#step1, #step3').hide();
+      		$('#step2').show();
+   		}
+
+    	function step3 (call) {
+      		// Hang up on an existing call if present
+      		if (window.existingCall) {
+        		window.existingCall.close();
+      		}
+
+      		// Wait for stream on the call, then set peer video display
+      		call.on('stream', function(stream){
+        		$('#their-video').prop('src', URL.createObjectURL(stream));
+      		});
+
+      		// UI stuff
+      		window.existingCall = call;
+      		$('#their-id').text(call.peer);
+      		call.on('close', step2);
+      		$('#step1, #step2').hide();
+      		$('#step3').show();
+    	}
+
+
+
+		// Await connections from others
+		peer.on('connection', connect); // Calls the connect function
+
+		// Handle a connection object.
+		function connect(c) {
+
+			// Handle a call connection.
+		  	if (c.label === 'call') {
+		    	//var commandBox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
+		    	var header = $('<h5></h5>').html('Connected to <strong>' + c.peer + '</strong>');
+		    	var messages = $('<div><em>  Peer connected.</em></div>').addClass('messages');
+		    	$('#status-area').append(header);
+		    	$('#status-area').append(messages);
+
+		    	$('#make-connection').hide();
+		    	$('#make-call').show();
+
+
+		    	// Select connection handler.
+		    	commandBox.on('click', function() {
+		    		if ($(this).attr('class').indexOf('active') === -1) {
+		        		$(this).addClass('active');
+		      		} else {
+		        		$(this).removeClass('active');
+		      		}
+		    	});
+
+		    	$('.filler').hide();
+		    	$('#connections').append(commandBox);
+
+		    	//c.on('data', function(data) { messages.append('<div><span class="peer">  ' + c.peer + '</span>: ' + data + '</div>'); });
+
+		    	// Close the call
+		    	c.on('close', function() {
+		      		alert('Peer ' + c.peer + ' has disconnected.');
+		        	commandBox.remove();
+		        	if ($('.connection').length === 0) {
+		        		$('.filler').show();
+		        	}
+		        	delete connectedPeers[c.peer];
+		    	});
+		  	}
+
+		  // else if (c.label === 'file') {
+		  //   c.on('data', function(data) {
+		  //     // If we're getting a file, create a URL for it.
+		  //     if (data.constructor === ArrayBuffer) {
+		  //       var dataView = new Uint8Array(data);
+		  //       var dataBlob = new Blob([dataView]);
+		  //       var url = window.URL.createObjectURL(dataBlob);
+		  //       $('#' + c.peer).find('.messages').append('<div><span class="file">' +
+		  //           c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+		  //     }
+		  //   });
+		  // }
+		}
+
+		$(document).ready(function() {
+
+			$('#make-call').hide();
+
+			// Connect to a peer
+			$('#make-connection').click(function() {
+		    	requestedPeer = $('#callto-id').val();
+		    	if (!connectedPeers[requestedPeer]) {
+		      		// Create 2 connections, one labelled chat and another labelled file.
+		      		var c = peer.connect(requestedPeer, {
+		        		label: 'call',
+		        		serialization: 'none',
+		        		metadata: {message: 'hi i want to call you!'}
+		      		});
+
+		      		c.on('open', function() {
+		        		connect(c);
+		      		});
+
+		      		c.on('error', function(err) { alert(err); });
+		      // var f = peer.connect(requestedPeer, { label: 'file', reliable: true });
+		      // f.on('open', function() {
+		      //   connect(f);
+		      // });
+		      // f.on('error', function(err) { alert(err); });
+		    	}
+
+		    	connectedPeers[requestedPeer] = 1; // Mark peer as connected
+		  	});
+
+		  	// Close a connection.
+		  	$('#close').click(function() {
+		    	eachActiveConnection(function(c) {
+		      		c.close();
+		    	});
+		  	});
+
+
+		  	// Send a chat message to all active connections.
+		  	$('#call').click(function() {
+		    	// For each active connection, send the message.
+		    	// var msg = $('#text').val();
+		    	eachActiveConnection(function(c, $c) {
+		      		if (c.label === 'call') {
+		        		//c.send(msg);
+		        		$c.find('.messages').append('<div><span class="you"><em>Calling peer</em></span></div>');
+		    		}
+		    	});
+		    	// $('#text').val('');
+		    	// $('#text').focus();
+
+		    	//requestedPeer = $('#callto-id').val();
+		    	mediaStream = navigator.getUserMedia;
+		    	var call = peer.call(c.peer, mediaStream);
+		  	});
+
+		  	// Goes through each active peer and calls FN on its connections.
+		  	function eachActiveConnection(fn) {
+		    	var actives = $('.active');
+		    	var checkedIds = {};
+		    	actives.each(function() {
+		      		var peerId = $(this).attr('id');
+
+		      		if (!checkedIds[peerId]) {
+		        		var conns = peer.connections[peerId];
+		        		for (var i = 0, ii = conns.length; i < ii; i += 1) {
+		          			var conn = conns[i];
+		          			fn(conn, $(this));
+		        		}
+		      		}
+
+		      		checkedIds[peerId] = 1;
+		    	});
+		  	}
+
+		});
+
+	</script>
+</head>
+
+<body>
+
+	<div class="pure-g">
+		<div id="connection-area">
+	    	<!-- Video area -->
+	    	<div class="pure-u-2-3" id="video-container" style="float:left">
+	    		<video id="their-video" autoplay></video>
+	        	<video id="my-video" muted="true" autoplay></video>
+	      	</div>
+	      	<div id="status-area">
+	      	</div>
+	    </div>
+
+      	<!-- Steps -->
+      	<div class="pure-u-1-3">
+        	<!-- Get local audio/video stream -->
+        	<!--<div id="step1">
+          		<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
+          		<div id="step1-error">
+            		<p>Failed to access the webcam and microphone. Make sure to run this demo on an http server and click allow when asked for permission by the browser.</p>
+            		<a href="#" class="pure-button pure-button-error" id="step1-retry">Try again</a>
+          		</div>
+        	</div>-->
+
+        	<!-- Connect to target device -->
+        	<div id="step2">
+        		<div style="float:left; padding-left: 20px; padding-right: 50px">
+        			<span style="font-size:20px">Connect to device</span>
+          			<div class="pure-form">
+            			<input type="text" placeholder="Connect to user id..." id="callto-id">
+            			<input class="button" type="button" id="make-connection" value="Connect">
+            			<input class="button" type="button" id="make-call" value="Request camera">
+            			<input class="button" type="button" id="end-call" value="End Call"></p>
+          			</div>
+          		</div>
+          		<div>
+	        		<p>Your id: <span id="my-id">...</span></p>
+	          		<p>Share this id with others so they can connect with you.</p>
+	          	</div>
+          		
+        	</div>
+      	</div>
+  	</div>
+
+
+	<!--<div id="actions">
+		<form id="send">
+	    	<input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send to selected peers">
+		</form>
+		<button id="close">Close selected connections</button>
+	</div>-->
+
+	<!--<div id="wrap"><div id="connections"><span class="filler"><strong>Disconnected.</strong></span></div>-->
+	<div class="clear"></div></div>
+
+</body>
+</html>

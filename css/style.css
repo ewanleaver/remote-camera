@@ -1,0 +1,68 @@
+#background {
+
+
+}
+
+#connection-area {
+	width:1250px ;
+	height:480px;
+	background-color: #DDDDDD;
+}
+
+#video-container {
+	width:640px ;
+	height:480px;
+	background-color: #333333;
+	float: left;
+}
+
+#status-area {
+	width:580px ;
+	height:480px;
+	background-color: #CCCCCC;
+	float: right;
+	border-radius: 10px;
+	padding-left: 10px
+}
+
+.connection {
+
+	background-color: #CCCCCC;
+	width: 500px ;
+	height: 500px;
+	border-radius: 10px;
+	padding-left: 10px;
+
+}
+
+.messages {
+
+	background-color: #AAAAAA;
+	width: 200px;
+	height: 20px;
+	border-radius: 10px;
+	font-size: 12px;
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:2px;
+
+}
+
+.you {
+
+	background-color: #77cc77;
+	width:200px ;
+	height: 30px;
+	border-radius: 10px;
+
+}
+
+.peer {
+
+	background-color: #7777cc;
+	width: 200px ;
+	height: 30px;
+	border-radius: 10px;
+
+}
+
