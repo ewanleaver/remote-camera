@@ -126,7 +126,7 @@
 			// Handle a call connection.
 		  	if (c.label === 'call') {
 		    	$('.status-area').addClass('active').attr('id', c.peer);
-		    	var header = $('<h5></h5>').html('Connected to <strong>' + c.peer + '</strong>');
+		    	var header = $('<div style="font-size:18px; padding-top:5px">Connected to <strong>' + c.peer + '</strong></div>');
 		    	var messages = $('<div><em>  Peer connected.</em></div>').addClass('messages');
 		    	$('.status-area').append(header);
 		    	$('.status-area').append(messages);
@@ -150,7 +150,7 @@
 
 		    	c.on('data', function(data) {
 		    		if (data === "call-me") {
-	      				$('.status-area').append('<div class="peer">Request to share camera</div>');
+	      				$('.status-area').append('<div class="event">Request to share camera</div>');
 
 	      				var call = peer.call(c.peer, window.localStream);
 
@@ -164,7 +164,7 @@
 	        			$('.unconnected-ui').hide();
 	        			$('.sharing-ui').show();
 	        		} else if (data === "shutter") {
-	        			$('.status-area').append('<div class="peer">Shutter request</div>');
+	        			$('.status-area').append('<div class="event">Shutter request</div>');
 
 	        			var video  = document.getElementById('camera');
 						var canvas = document.createElement('canvas');
@@ -177,6 +177,13 @@
 
 						document.getElementById('picture').src = dataURL;
 
+
+						eachActiveConnection(function(c, $c) {
+      						if (c.label === 'file') {
+        						c.send(dataURL);
+        						$('.status-area').append('<div class="request">Sent photo</div>');
+      						}
+    					});
 
 						/*
 	        			var photo = document.getElementById('picture'), context = photo.getContext('2d');
@@ -193,6 +200,25 @@
           				*/
   						//context.drawImage(video, 0, 0, photo.width, photo.height);
 
+  						// Goes through each active peer and calls FN on its connections.
+						function eachActiveConnection(fn) {
+							var actives = $('.active');
+							var checkedIds = {};
+							actives.each(function() {
+			    				var peerId = $(this).attr('id');
+
+			      				if (!checkedIds[peerId]) {
+			        				var conns = peer.connections[peerId];
+			        				for (var i = 0, ii = conns.length; i < ii; i += 1) {
+			          					var conn = conns[i];
+			          					fn(conn, $(this));
+			        				}
+			      				}
+
+			      				checkedIds[peerId] = 1;
+			    			});
+						}
+
 	        		}
       			});
 
@@ -205,20 +231,21 @@
 		        	}
 		        	delete connectedPeers[c.peer];
 		    	});
-		  	}
 
-		  // else if (c.label === 'file') {
-		  //   c.on('data', function(data) {
-		  //     // If we're getting a file, create a URL for it.
-		  //     if (data.constructor === ArrayBuffer) {
-		  //       var dataView = new Uint8Array(data);
-		  //       var dataBlob = new Blob([dataView]);
-		  //       var url = window.URL.createObjectURL(dataBlob);
-		  //       $('#' + c.peer).find('.messages').append('<div><span class="file">' +
-		  //           c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
-		  //     }
-		  //   });
-		  // }
+		  	} else if (c.label === 'file') {
+		    	c.on('data', function(data) {
+		    		//$('.status-area').append('<div class="event">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a></div>');
+		    		$('.status-area').append('<div class="event">Received photo from' + c.peer + '</div>');
+		    		document.getElementById('picture').src = data;
+		     		// If we're getting a file, create a URL for it.
+		      		if (data.constructor === ArrayBuffer) {
+		        		var dataView = new Uint8Array(data);
+		        		var dataBlob = new Blob([dataView]);
+		        		var url = window.URL.createObjectURL(dataBlob);
+		        		
+		      		}
+		    	});
+		  	}
 		}
 
 		$(document).ready(function() {
@@ -261,7 +288,7 @@
 			    eachActiveConnection(function(c, $c) {
 			      	if (c.label === 'call') {
 			        	c.send(msg);
-			        	$('.status-area').append('<div class="you">Requesting camera</div>');
+			        	$('.status-area').append('<div class="request">Requesting camera</div>');
 			      	}
 			    });
 			});
@@ -273,7 +300,7 @@
 			    eachActiveConnection(function(c, $c) {
 			      	if (c.label === 'call') {
 			        	c.send(msg);
-			        	$('.status-area').append('<div class="you">Requesting photo</div>');
+			        	$('.status-area').append('<div class="request">Requesting photo</div>');
 			      	}
 			    });
 

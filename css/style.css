@@ -4,7 +4,7 @@
 }
 
 #connection-area {
-	width:1250px ;
+	width:980px ;
 	height:480px;
 	background-color: #DDDDDD;
 }
@@ -17,7 +17,7 @@
 }
 
 .status-area {
-	width:580px ;
+	width:320px ;
 	height:480px;
 	background-color: #CCCCCC;
 	float: right;
@@ -38,39 +38,42 @@
 .messages {
 
 	background-color: #AAAAAA;
-	width: 500px;
+	width: 290px;
 	height: 20px;
 	border-radius: 10px;
 	font-size: 12px;
 	padding-left:7px;
 	padding-right:7px;
 	padding-top:2px;
+	margin:2px;
 
 }
 
-.you {
+.request {
 
 	background-color: #77cc77;
-	width: 500px;
+	width: 290px;
 	height: 20px;
 	border-radius: 10px;
 	font-size: 12px;
 	padding-left:7px;
 	padding-right:7px;
 	padding-top:2px;
+	margin:2px;
 
 }
 
-.peer {
+.event {
 
 	background-color: #7777cc;
-	width: 500px;
+	width: 290px;
 	height: 20px;
 	border-radius: 10px;
 	font-size: 12px;
 	padding-left:7px;
 	padding-right:7px;
 	padding-top:2px;
+	margin:2px;
 
 }
 
