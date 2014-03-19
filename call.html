@@ -4,8 +4,10 @@
 	<title>Generic WebApp</title>
 
 	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<!--<link type="text/css" rel="stylesheet" href="css/bootstrap.css">-->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script type="text/javascript" src="https://skyway.io/dist/0.3/peer.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
 
 	<script>
 	 	var SKYWAY_APIKEY = "4362638a-9e84-11e3-9939-47b360702393";
@@ -42,25 +44,26 @@
 
     	// Click handlers setup
     	$(function(){
-      		$('#make-call').click(function(){
+    		// Defined in connect()
+      		/*$('#make-call').click(function(){
         		// Initiate a call!
         		var call = peer.call($('#callto-id').val(), window.localStream);
 
         		step3(call);
         		$('#step2').hide();
-      		});
+      		});*/
 
       		$('#end-call').click(function(){
         		window.existingCall.close();
         		step2();
       		});
-
+      		/*
       		// Retry if getUserMedia fails
       		$('#step1-retry').click(function(){
         		$('#step1-error').hide();
         		step1();
       		});
-
+			*/
       		// Get things started
       		step1();
     	});
@@ -94,7 +97,7 @@
 
       		// UI stuff
       		window.existingCall = call;
-      		$('#their-id').text(call.peer);
+      		$('#callto-id').text(call.peer);
       		call.on('close', step2);
       		$('#step1, #step2').hide();
       		$('#step3').show();
@@ -110,11 +113,11 @@
 
 			// Handle a call connection.
 		  	if (c.label === 'call') {
-		    	//var commandBox = $('<div></div>').addClass('connection').addClass('active').attr('id', c.peer);
+		    	$('.status-area').addClass('active').attr('id', c.peer);
 		    	var header = $('<h5></h5>').html('Connected to <strong>' + c.peer + '</strong>');
 		    	var messages = $('<div><em>  Peer connected.</em></div>').addClass('messages');
-		    	$('#status-area').append(header);
-		    	$('#status-area').append(messages);
+		    	$('.status-area').append(header);
+		    	$('.status-area').append(messages);
 
 		    	$('#make-connection').hide();
 		    	$('#make-call').show();
@@ -189,6 +192,27 @@
 		    	connectedPeers[requestedPeer] = 1; // Mark peer as connected
 		  	});
 
+		  	// Request peer's camera
+		  	/*$('#make-call').click(function() {
+		  		
+		  		var peerId = $('.status-area').attr('id');
+		  		//$('.status-area').append('<div class="you"><em>Test with ' peerId '</em></div>');
+		  		var conns = peer.connections[peerId];
+		  		//var c = peer.connections[$('#callto-id').val()];
+
+		  		for (var i = 0, ii = conns.length; i < ii; i += 1) {
+		          	var conn = conns[i];
+		          	$('.status-area').append('<div class="you"><em>Test</em></div>');
+		        }
+		  		
+
+		  		var msg = "call-me";
+		  		if (c.label === 'call') {
+		  			$('.status-area').append('<div class="you"><em>Requesting camera on ' + c.label + '</em></div>');
+		  			c.send(msg);
+		    	}
+			});*/
+
 		  	// Close a connection.
 		  	$('#close').click(function() {
 		    	eachActiveConnection(function(c) {
@@ -196,43 +220,37 @@
 		    	});
 		  	});
 
-
 		  	// Send a chat message to all active connections.
-		  	$('#call').click(function() {
-		    	// For each active connection, send the message.
-		    	// var msg = $('#text').val();
-		    	eachActiveConnection(function(c, $c) {
-		      		if (c.label === 'call') {
-		        		//c.send(msg);
-		        		$c.find('.messages').append('<div><span class="you"><em>Calling peer</em></span></div>');
-		    		}
-		    	});
-		    	// $('#text').val('');
-		    	// $('#text').focus();
-
-		    	//requestedPeer = $('#callto-id').val();
-		    	mediaStream = navigator.getUserMedia;
-		    	var call = peer.call(c.peer, mediaStream);
-		  	});
+			$('#make-call').click(function() {
+			    //e.preventDefault();
+			    // For each active connection, send the message.
+			    var msg = "call-me";
+			    eachActiveConnection(function(c, $c) {
+			      	if (c.label === 'call') {
+			        	c.send(msg);
+			        	$('.status-area').append('<div class="you">Requesting camera</div>');
+			      	}
+			    });
+			});
 
 		  	// Goes through each active peer and calls FN on its connections.
-		  	function eachActiveConnection(fn) {
-		    	var actives = $('.active');
-		    	var checkedIds = {};
-		    	actives.each(function() {
-		      		var peerId = $(this).attr('id');
+			function eachActiveConnection(fn) {
+				var actives = $('.active');
+				var checkedIds = {};
+				actives.each(function() {
+			    	var peerId = $(this).attr('id');
 
-		      		if (!checkedIds[peerId]) {
-		        		var conns = peer.connections[peerId];
-		        		for (var i = 0, ii = conns.length; i < ii; i += 1) {
-		          			var conn = conns[i];
-		          			fn(conn, $(this));
-		        		}
-		      		}
+			      	if (!checkedIds[peerId]) {
+			        	var conns = peer.connections[peerId];
+			        	for (var i = 0, ii = conns.length; i < ii; i += 1) {
+			          		var conn = conns[i];
+			          		fn(conn, $(this));
+			        	}
+			      	}
 
-		      		checkedIds[peerId] = 1;
-		    	});
-		  	}
+			      	checkedIds[peerId] = 1;
+			    });
+			}
 
 		});
 
@@ -248,7 +266,7 @@
 	    		<video id="their-video" autoplay></video>
 	        	<video id="my-video" muted="true" autoplay></video>
 	      	</div>
-	      	<div id="status-area">
+	      	<div class="status-area">
 	      	</div>
 	    </div>
 
