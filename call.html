@@ -92,18 +92,28 @@
 
       		// Wait for stream on the call, then set peer video display
       		call.on('stream', function(stream){
-        		$('#their-video').prop('src', URL.createObjectURL(stream));
+        		$('#camera').prop('src', URL.createObjectURL(stream));
       		});
 
       		// UI stuff
       		window.existingCall = call;
       		$('#callto-id').text(call.peer);
       		call.on('close', step2);
-      		$('#step1, #step2').hide();
+      		//$('#step1, #step2').hide();
+      		$('.unconnected-ui').hide();
+	        $('.connected-ui').show();
       		$('#step3').show();
     	}
 
-
+    	function takePicture() {
+  			var photo = document.getElementById('picture'),
+  			context = photo.getContext('2d');
+      
+  			photo.width = video.clientWidth;
+  			photo.height = video.clientHeight;
+          
+  			context.drawImage(video, 0, 0, photo.width, photo.height);
+		}
 
 		// Await connections from others
 		peer.on('connection', connect); // Calls the connect function
@@ -142,10 +152,18 @@
 
 	      				var call = peer.call(c.peer, window.localStream);
 
+	      				// UI stuff
+      					window.existingCall = call;
+      					$('#camera').prop('src', URL.createObjectURL(window.localStream));
+      					//$('#callto-id').text(call.peer);
+      					call.on('close', step2);
+
 	        			//step3(call);
-	        			$('#step2').hide();
+	        			$('.unconnected-ui').hide();
+	        			$('.sharing-ui').show();
 	        		} else if (data === "shutter") {
-	        			
+	        			$('.status-area').append('<div class="peer">Shutter request</div>');
+	        			takePicture();
 	        		}
       			});
 
@@ -177,28 +195,30 @@
 		$(document).ready(function() {
 
 			$('#make-call').hide();
+			$('.connected-ui').hide();
+			$('.sharing-ui').hide();
 
 			// Connect to a peer
 			$('#make-connection').click(function() {
 		    	requestedPeer = $('#callto-id').val();
 		    	if (!connectedPeers[requestedPeer]) {
-		      		// Create 2 connections, one labelled chat and another labelled file.
+		      		// Create 2 connections, one for commands and another for file transfer.
 		      		var c = peer.connect(requestedPeer, {
 		        		label: 'call',
 		        		serialization: 'none',
 		        		metadata: {message: 'hi i want to call you!'}
 		      		});
-
 		      		c.on('open', function() {
 		        		connect(c);
 		      		});
-
 		      		c.on('error', function(err) { alert(err); });
-		      // var f = peer.connect(requestedPeer, { label: 'file', reliable: true });
-		      // f.on('open', function() {
-		      //   connect(f);
-		      // });
-		      // f.on('error', function(err) { alert(err); });
+		      
+					// File connection (for sending photos)
+		      		var f = peer.connect(requestedPeer, { label: 'file', reliable: true });
+		      		f.on('open', function() {
+		      			connect(f);
+		      		});
+		      		f.on('error', function(err) { alert(err); });
 		    	}
 
 		    	connectedPeers[requestedPeer] = 1; // Mark peer as connected
@@ -215,6 +235,19 @@
 			        	$('.status-area').append('<div class="you">Requesting camera</div>');
 			      	}
 			    });
+			});
+
+			$('#take-photo').click(function() {
+
+				// For each active connection, send the message.
+			    var msg = "shutter";
+			    eachActiveConnection(function(c, $c) {
+			      	if (c.label === 'call') {
+			        	c.send(msg);
+			        	$('.status-area').append('<div class="you">Requesting photo</div>');
+			      	}
+			    });
+
 			});
 
 		  	// Close a connection.
@@ -254,8 +287,8 @@
 		<div id="connection-area">
 	    	<!-- Video area -->
 	    	<div class="pure-u-2-3" id="video-container" style="float:left">
-	    		<video id="their-video" autoplay></video>
-	        	<video id="my-video" muted="true" autoplay></video>
+	    		<video id="camera" autoplay></video>
+	        	<!--<video id="my-video" muted="true" autoplay></video>-->
 	      	</div>
 	      	<div class="status-area">
 	      	</div>
@@ -274,19 +307,29 @@
 
         	<!-- Connect to target device -->
         	<div id="step2">
-        		<div style="float:left; padding-left: 20px; padding-right: 50px">
-        			<span style="font-size:20px">Connect to device</span>
-          			<div class="pure-form">
+        		<div style="float:left; padding-top:16px; padding-left: 20px; padding-right: 50px">
+
+          			<div class="unconnected-ui" style="z-index: 0; position:relative">
+          				<span style="font-size:20px">Connect to device</span><br>
             			<input type="text" placeholder="Connect to user id..." id="callto-id">
             			<input class="button" type="button" id="make-connection" value="Connect">
             			<input class="button" type="button" id="make-call" value="Request camera">
-            			<input class="button" type="button" id="end-call" value="End Call"></p>
           			</div>
+          			<div class="connected-ui" style="z-index: 0; position:relative">
+          				<span style="font-size:20px">Connected to device</span><br>
+          				<input class="button" type="button" id="end-call" value="End Call">
+          				<input class="button" type="button" id="take-photo" value="Take Photo">
+          			</div>
+          			<div class="sharing-ui" style="z-index: 0; position:relative">
+          				<span style="font-size:20px; color:#cc0000">Sharing Camera</span><br>
+          				<input class="button" type="button" id="end-call" value="End Call">
+          			</div>
+          			<div style="position:fixed; top:580px">
+	        			<p>Your id: <span id="my-id" style="color:#AAAAAA">...</span></p>
+	          			<p>Share this id with others so they can connect with you.</p>
+	          		</div>
           		</div>
-          		<div>
-	        		<p>Your id: <span id="my-id">...</span></p>
-	          		<p>Share this id with others so they can connect with you.</p>
-	          	</div>
+
           		
         	</div>
       	</div>
