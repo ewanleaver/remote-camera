@@ -10,14 +10,26 @@
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 
 	<script>
-	 	var SKYWAY_APIKEY = "4362638a-9e84-11e3-9939-47b360702393";
+	 	//var SKYWAY_APIKEY = "4362638a-9e84-11e3-9939-47b360702393";
+	 	var SKYWAY_APIKEY = "b0a007fa-af27-11e3-b735-7312b2da93b5";
 
 		// Media compatability
 	    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 
+		function makeid()
+		{
+		    var text = "";
+		    var possible = "0123456789";
+
+		    for( var i=0; i < 4; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		    return text;
+		}
+
 		// Connect to Skyway, have server assign an ID instead of providing one
-		var peer = new Peer ({ key: SKYWAY_APIKEY }); // Skyway API key
+		var peer = new Peer (makeid(), { key: SKYWAY_APIKEY }); // Skyway API key
 
 		// Track all connections
 		var connectedPeers = {};
@@ -105,16 +117,6 @@
       		$('#step3').show();
     	}
 
-    	function takePicture() {
-  			var photo = document.getElementById('picture'),
-  			context = photo.getContext('2d');
-      
-  			photo.width = video.clientWidth;
-  			photo.height = video.clientHeight;
-          
-  			context.drawImage(video, 0, 0, photo.width, photo.height);
-		}
-
 		// Await connections from others
 		peer.on('connection', connect); // Calls the connect function
 
@@ -163,7 +165,34 @@
 	        			$('.sharing-ui').show();
 	        		} else if (data === "shutter") {
 	        			$('.status-area').append('<div class="peer">Shutter request</div>');
-	        			takePicture();
+
+	        			var video  = document.getElementById('camera');
+						var canvas = document.createElement('canvas');
+						canvas.width  = video.videoWidth;
+						canvas.height = video.videoHeight;
+						var ctx = canvas.getContext('2d');
+						ctx.drawImage(video, 0, 0);
+
+						var dataURL = canvas.toDataURL();
+
+						document.getElementById('picture').src = dataURL;
+
+
+						/*
+	        			var photo = document.getElementById('picture'), context = photo.getContext('2d');
+  						var video = $('#camera');
+  						var dataURI = video.toDataURL();
+
+  						photo.width = video.clientWidth;
+  						photo.height = video.clientHeight;
+
+  						var download = document.createElement('a');
+						download.href = dataURI;
+						download.download = 'test.png';
+						download.click();
+          				*/
+  						//context.drawImage(video, 0, 0, photo.width, photo.height);
+
 	        		}
       			});
 
@@ -328,10 +357,12 @@
 	        			<p>Your id: <span id="my-id" style="color:#AAAAAA">...</span></p>
 	          			<p>Share this id with others so they can connect with you.</p>
 	          		</div>
+	          		
           		</div>
 
           		
         	</div>
+        	<img id="picture" style="position:fixed; top:500px; left:670px; width:320px; height:240px; background-color:#DDDDDD"></img>
       	</div>
   	</div>
 
