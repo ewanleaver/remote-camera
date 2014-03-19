@@ -82,7 +82,7 @@
 
     	function step1() {
       		// Get audio/video stream
-      		navigator.getUserMedia({audio: true, video: true}, function(stream){
+      		navigator.getUserMedia({audio: false, video: true}, function(stream){
         		// Set your video displays
         		//$('#my-video').prop('src', URL.createObjectURL(stream));
 
@@ -126,7 +126,7 @@
 			// Handle a call connection.
 		  	if (c.label === 'call') {
 		    	$('.status-area').addClass('active').attr('id', c.peer);
-		    	var header = $('<div style="font-size:18px; padding-top:5px">Connected to <strong>' + c.peer + '</strong></div>');
+		    	var header = $('<div style="font-size:18px; padding-top:5px">Connection with <strong>' + c.peer + '</strong></div>');
 		    	var messages = $('<div><em>  Peer connected.</em></div>').addClass('messages');
 		    	$('.status-area').append(header);
 		    	$('.status-area').append(messages);
@@ -235,7 +235,7 @@
 		  	} else if (c.label === 'file') {
 		    	c.on('data', function(data) {
 		    		//$('.status-area').append('<div class="event">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a></div>');
-		    		$('.status-area').append('<div class="event">Received photo from' + c.peer + '</div>');
+		    		$('.status-area').append('<div class="event">Received photo from ' + c.peer + '</div>');
 		    		document.getElementById('picture').src = data;
 		     		// If we're getting a file, create a URL for it.
 		      		if (data.constructor === ArrayBuffer) {
