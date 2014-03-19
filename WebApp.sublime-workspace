@@ -3,15 +3,55 @@
 	{
 		"selected_items":
 		[
+			[
+				"padding",
+				"padding-left"
+			],
+			[
+				"make-",
+				"make-connection"
+			],
+			[
+				"make",
+				"make-call"
+			],
+			[
+				"t",
+				"text"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"back",
+				"background-color"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "index.html.en",
+			"file": "css/style.css",
 			"settings":
 			{
-				"buffer_size": 7082,
+				"buffer_size": 807,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "call.html",
+			"settings":
+			{
+				"buffer_size": 9392,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "video_test.html",
+			"settings":
+			{
+				"buffer_size": 4054,
 				"line_ending": "Unix"
 			}
 		}
@@ -68,25 +108,17 @@
 	},
 	"file_history":
 	[
-		"/Users/internship/workspace/skydrop/index.html",
-		"/Users/internship/workspace/test_skyway_ajimibu/script.js",
-		"/Users/internship/workspace/skydrop/js/skydrop.coffee",
-		"/Users/internship/workspace/skydrop/js/skydrop.map",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/SublimeOnSaveBuild/SublimeOnSaveBuild.sublime-settings",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/User/SublimeOnSaveBuild.sublime-settings",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/User/CoffeeScript.sublime-settings",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/Better CoffeeScript/CoffeeScript.sublime-settings",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
-		"/Users/internship/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
-		"/Users/internship/Downloads/Preferences.sublime-settings"
-	],
+		"/Users/ewan/Sites/remote-camera/WebApp.sublime-project",
+		"/Users/ewan/Sites/remote-camera/skyway_test.html",
+		"/Users/ewan/Sites/remote-camera/index.html.en",
+		"/Users/ewan/Sites/remote-camera/index.html.en.bak",	],
 	"find":
 	{
 		"height": 35.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 		]
@@ -96,6 +128,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"rid",
+			"id",
+			"rid",
+			"filler",
+			"commandbox",
+			"step2",
+			"step1",
+			"fetchStreams",
+			"step1",
+			"pid",
+			"chatbox",
+			"send to s",
+			"rid",
 			"theme"
 		],
 		"highlight": true,
@@ -104,6 +149,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"callto-id",
+			"commandBox",
+			"hideIDs",
+			"fetchStreams",
+			"step1",
+			"fetchStreams"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -114,31 +165,86 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "index.html.en",
+					"file": "css/style.css",
 					"settings":
 					{
-						"buffer_size": 7082,
+						"buffer_size": 807,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7082,
-								7082
+								323,
+								323
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "call.html",
+					"settings":
+					{
+						"buffer_size": 9392,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3253,
+								3253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1310.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "video_test.html",
+					"settings":
+					{
+						"buffer_size": 4054,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3860,
+								3860
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1291.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -157,7 +263,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -195,7 +301,7 @@
 	},
 	"replace":
 	{
-		"height": 0.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
