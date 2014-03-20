@@ -92,8 +92,8 @@ function connect(c) {
     	$('.status-area').append(header);
     	$('.status-area').append(messages);
 
-    	$('#make-connection').hide();
-    	$('#make-call').show();
+    	var shutter_sound = document.createElement("audio"); 
+    	shutter_sound.setAttribute("src", "resources/shutter.wav");
 
     	/*
     	// Select connection handler.
@@ -136,6 +136,7 @@ function connect(c) {
 
 				var dataURL = canvas.toDataURL();
 
+				shutter_sound.play();
 				document.getElementById('picture').src = dataURL;
 
 
@@ -216,116 +217,5 @@ $(document).ready(function() {
 
 	// Await connections from others
 	peer.on('connection', connect); // Calls the connect function
-
-	// Click handlers
-
-	// Connect to a peer
-	$('#make-connection').click(function() {
-    	requestedPeer = $('#callto-id').val();
-    	if (!connectedPeers[requestedPeer]) {
-      		// Create 2 connections, one for commands and another for file transfer.
-      		var c = peer.connect(requestedPeer, {
-        		label: 'call',
-        		serialization: 'none',
-        		metadata: {message: 'hi i want to call you!'}
-      		});
-      		c.on('open', function() {
-        		connect(c);
-      		});
-      		c.on('error', function(err) { alert(err); });
-      
-			// File connection (for sending photos)
-      		var f = peer.connect(requestedPeer, { label: 'file', reliable: true });
-      		f.on('open', function() {
-      			connect(f);
-      		});
-      		f.on('error', function(err) { alert(err); });
-    	}
-
-    	connectedPeers[requestedPeer] = 1; // Mark peer as connected
-  	});
-
-  	// Request peer's camera
-	$('#make-call').click(function() {
-	    //e.preventDefault();
-	    // For each active connection, send the message.
-	    var msg = "call-me";
-	    eachActiveConnection(function(c, $c) {
-	      	if (c.label === 'call') {
-	        	c.send(msg);
-	        	$('.status-area').append('<div class="request">Requesting camera</div>');
-	      	}
-	    });
-	});
-
-	$('#inner-shutter').mousedown(function() {
-  		//$(this).animate({ backgroundColor:'#0000CC'},1000);
-  		$('#inner-shutter').fadeTo(20,0);
-  	})
-
-  	$('#inner-shutter').mouseup(function() {
-  		//$(this).animate({ backgroundColor:'#00CC00'},1000);
-  		$('#inner-shutter').fadeTo(20,0.7);
-  	})
-
-	$('#inner-shutter').click(function() {
-
-		// For each active connection, send the message.
-	    var msg = "shutter";
-	    eachActiveConnection(function(c, $c) {
-	      	if (c.label === 'call') {
-	        	c.send(msg);
-	        	$('.status-area').append('<div class="request">Requesting photo</div>');
-	      	}
-	    });
-
-	});
-
-	$('#end-call').click(function(){
-		window.existingCall.close();
-		step2();
-	});
-
-  	// Close a connection.
-  	$('#close').click(function() {
-    	eachActiveConnection(function(c) {
-      		c.close();
-    	});
-  	});
-
-  	$('#inner-shutter').mouseenter(function() {
-
-  		$('#inner-shutter').fadeTo(100,0.7); 
-  		$('#outer-shutter').fadeTo(100,0.3); 
-
-  	});
-
-  	$('#inner-shutter').mouseleave(function() {
-
-  		$('#inner-shutter').fadeTo(100,0.3); 
-  		$('#outer-shutter').fadeTo(100,0.1); 
-
-  	});
-
-
-
-  	// Goes through each active peer and calls FN on its connections.
-	function eachActiveConnection(fn) {
-		var actives = $('.active');
-		var checkedIds = {};
-		actives.each(function() {
-	    	var peerId = $(this).attr('id');
-
-	      	if (!checkedIds[peerId]) {
-	        	var conns = peer.connections[peerId];
-	        	for (var i = 0, ii = conns.length; i < ii; i += 1) {
-	          		var conn = conns[i];
-	          		fn(conn, $(this));
-	        	}
-	      	}
-
-	      	checkedIds[peerId] = 1;
-	    });
-	}
 
 });
