@@ -33,12 +33,11 @@ peer.on('call', function(call){
 		// Answer the call automatically (instead of prompting user) for demo purposes
 		//call.answer(window.localStream);
 		call.answer();
-		step3(call);
+		step2(call);
 });
 
 peer.on('error', function(err){
 		alert(err.message);
-		// Return to step 2 if error occurs
 });
 
 function step1() {
@@ -51,7 +50,7 @@ function step1() {
 		}, function(){ $('#step1-error').show(); });
 }
 
-function step3 (call) {
+function step2 (call) {
 		// Hang up on an existing call if present
 		if (window.existingCall) {
 		window.existingCall.close();
@@ -69,7 +68,7 @@ function step3 (call) {
 		// PC side?
 		$('.pc-ui').hide();
     	$('.connected-ui').show();
-		$('#step3').show();
+		$('#step2').show();
 }
 
 // Handle a connection object.
@@ -105,7 +104,8 @@ function connect(c) {
     		// document.getElementById('picture').src = data;
 
      		// $('#picture').before('<img id="picture" style="width:225px; height:168.75px;"></img>')
-     		$("#photo-stream").prepend('<img class="photo" src=' + data + ' style="width:225px; height:168.75px;"></img>');
+     		$("#photo-stream").prepend('<img class="photo" src=' + data + ' style="width:225px; height:168.75px; download="photo.png"></img>');
+
     	});
   	}
 }
@@ -117,6 +117,22 @@ $(document).ready(function() {
 
 	var shutter_sound = document.createElement("audio"); 
     shutter_sound.setAttribute("src", "resources/shutter.wav");
+
+    $('#photo-stream').delegate(".photo", "click", function(event) {
+
+    	
+    	var a = document.createElement('a');
+
+  		a.download = "photo.png";
+  		a.type = "image/png";
+  		a.href = $(this).attr('src');
+
+  		//document.getElementsByTagName('body')[0].appendChild(a);
+  		a.click();
+		
+		//location.href = $(this).attr('src');
+
+    });
 
 	// Button handlers
 
@@ -131,19 +147,16 @@ $(document).ready(function() {
   		$(this).fadeTo(20,0.8);
   	})
 
-  	$('.photo').click(function (e) {
+  	$('.photo').click(function () {
 
-  		var source = e.target.src;
+  		//var source = e.target.src;
 
-  		var a = document.createElement('a');
+		/*var event = document.createEvent('Event');
+        event.initEvent('click', true, true);
+        a.dispatchEvent(event);
+        (window.URL || window.webkitURL).revokeObjectURL(a.href);*/
 
-  		a.download= ("photo.png");
-  		a.type = "image/png";
-  		var blob = new Blob(source, {type:a.type})
-  		a.href = (window.URL || webkitURL).createObjectURL(blob);
-  		a.click();
-
-  		//.delegate(.photo, click, photoClick);
+  		//
 
   	});
 

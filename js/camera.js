@@ -28,17 +28,8 @@ peer.on('open', function(id){
   	$('#my-id').text(id); // Instead assign it to HTML id my-id
 });
 
-// Receiving a call
-peer.on('call', function(call){
-		// Answer the call automatically (instead of prompting user) for demo purposes
-		//call.answer(window.localStream);
-		call.answer();
-		step3(call);
-});
-
 peer.on('error', function(err){
 		alert(err.message);
-		// Return to step 2 if error occurs
 });
 
 function step1() {
@@ -52,7 +43,7 @@ function step1() {
 		}, function(){ $('#step1-error').show(); });
 }
 
-function step3 (call) {
+function step2 (call) {
 		// Hang up on an existing call if present
 		if (window.existingCall) {
 		window.existingCall.close();
@@ -71,7 +62,7 @@ function step3 (call) {
 		// PC side?
 		$('.pc-ui').hide();
     	$('.connected-ui').show();
-		$('#step3').show();
+		$('#step2').show();
 }
 
 // Handle a connection object.
@@ -113,7 +104,7 @@ function connect(c) {
 				window.existingCall = call;
 				$('#camera').prop('src', URL.createObjectURL(window.localStream));
 
-    			//step3(call);
+    			//step2(call);
     			$('.camera-ui').hide();
     			//$('.sharing-ui').show();
     		} else if (data === "shutter") {

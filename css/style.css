@@ -114,9 +114,9 @@ html, body {
 
 .pc-ui {
 
-	height: 120px;
+	height: 150px;
 	width: 350px;
-	padding: 30px;
+	padding: 15px;
 
 	border-radius: 20px;
 	text-align: center;
@@ -126,7 +126,7 @@ html, body {
 	background-color: #DDDDDD;
 	opacity: 0.9;
 	left: 50%;
-	margin-left: -205px;
+	margin-left: -190px;
 	top: 50%;
 	margin-top: -90px;
 
