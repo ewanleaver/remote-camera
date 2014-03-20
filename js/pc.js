@@ -125,10 +125,20 @@ $(document).ready(function() {
 	var shutter_sound = document.createElement("audio"); 
     shutter_sound.setAttribute("src", "resources/shutter.wav");
 
-	// Click handlers
+	// Button handlers
 
 	// Connect to a peer
-	$('#make-connection').click(function() {
+	$('.custom-button').mousedown(function() {
+  		//$(this).animate({ backgroundColor:'#0000CC'},1000);
+  		$(this).fadeTo(20,1);
+  	})
+
+  	$('.custom-button').mouseup(function() {
+  		//$(this).animate({ backgroundColor:'#00CC00'},1000);
+  		$(this).fadeTo(20,0.8);
+  	})
+
+	$('#connect-button').click(function() {
     	requestedPeer = $('#callto-id').val();
     	if (!connectedPeers[requestedPeer]) {
       		// Create 2 connections, one for commands and another for file transfer.
@@ -151,11 +161,17 @@ $(document).ready(function() {
     	}
 
     	connectedPeers[requestedPeer] = 1; // Mark peer as connected
+
+    	$('#status').text("Connected");
+    	$('#callto-id').hide();
+    	$('#connect-button').hide();
+    	$('#call-button').show();
+
   	});
 
   	// Request peer's camera
-	$('#make-call').click(function() {
-	    //e.preventDefault();
+	$('#call-button').click(function() {
+
 	    // For each active connection, send the message.
 	    var msg = "call-me";
 	    eachActiveConnection(function(c, $c) {
@@ -164,6 +180,7 @@ $(document).ready(function() {
 	        	$('.status-area').append('<div class="request">Requesting camera</div>');
 	      	}
 	    });
+
 	});
 
 	$('#inner-shutter').mousedown(function() {
@@ -198,6 +215,14 @@ $(document).ready(function() {
     	eachActiveConnection(function(c) {
       		c.close();
     	});
+  	});
+
+  	$('.custom-button').mouseenter(function () {
+  		$(this).fadeTo(50,0.8); 
+  	});
+
+  	$('.custom-button').mouseleave(function () {
+  		$(this).fadeTo(50,0.5); 
   	});
 
   	$('#inner-shutter').mouseenter(function() {

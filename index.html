@@ -38,9 +38,14 @@
         	<!-- Connect to target device -->
         	<div class="pc-ui">
           		<span style="color:#777777; font-size:35px" id="status">Connect to device</span><br>
-            	<input type="text" placeholder="Connect to user id..." id="callto-id">
-            	<input class="button" type="button" id="make-connection" value="Connect">
-            	<input class="button" type="button" id="make-call" value="Request camera" style="display:none">
+            	<input type="text" placeholder="Device ID" id="callto-id">
+            	<br>
+            	<div id="connect-button" class="custom-button">
+            		<span style="color:#AACCFF; font-size:20px" id="make-connection">Connect</span>
+            	</div>
+            	<div id="call-button" class="custom-button">
+            		<span style="color:#AACCFF; font-size:20px" id="make-connection">Call</span>
+            	</div>
         	</div>
 
         	<div id="shutter" class="connected-ui">
