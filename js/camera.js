@@ -85,8 +85,9 @@ function connect(c) {
     	$('.status-area').append(header);
     	$('.status-area').append(messages);
 
-    	var shutter_sound = document.createElement("audio"); 
-    	shutter_sound.setAttribute("src", "resources/shutter.wav");
+    	// Sound doesn't play on android... moving to PC side
+    	//var shutter_sound = document.createElement("audio"); 
+    	//shutter_sound.setAttribute("src", "resources/shutter.wav");
 
     	/*
     	// Select connection handler.
@@ -127,7 +128,7 @@ function connect(c) {
 
 				var dataURL = canvas.toDataURL();
 
-				shutter_sound.play();
+				//shutter_sound.play();
 				document.getElementById('picture').src = dataURL;
 
 

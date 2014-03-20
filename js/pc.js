@@ -149,6 +149,12 @@ $(document).ready(function() {
       		});
       		c.on('open', function() {
         		connect(c);
+
+      			$('#status').text("Connected");
+    			$('#callto-id').hide();
+    			$('#connect-button').hide();
+    			$('#call-button').show();
+
       		});
       		c.on('error', function(err) { alert(err); });
       
@@ -158,14 +164,10 @@ $(document).ready(function() {
       			connect(f);
       		});
       		f.on('error', function(err) { alert(err); });
+
     	}
 
     	connectedPeers[requestedPeer] = 1; // Mark peer as connected
-
-    	$('#status').text("Connected");
-    	$('#callto-id').hide();
-    	$('#connect-button').hide();
-    	$('#call-button').show();
 
   	});
 
@@ -200,6 +202,7 @@ $(document).ready(function() {
 	    eachActiveConnection(function(c, $c) {
 	      	if (c.label === 'call') {
 	        	c.send(msg);
+	        	shutter_sound.play();
 	        	$('.status-area').append('<div class="request">Requesting photo</div>');
 	      	}
 	    });
