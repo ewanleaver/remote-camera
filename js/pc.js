@@ -102,17 +102,10 @@ function connect(c) {
     	c.on('data', function(data) {
     		//$('.status-area').append('<div class="event">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a></div>');
     		$('.status-area').append('<div class="event">Received photo from ' + c.peer + '</div>');
-    		document.getElementById('picture').src = data;
+    		// document.getElementById('picture').src = data;
 
-     		$('#picture').append('<img id="picture" style="width:225px; height:168.75px;"></img>')
-     		
-
-      		/*if (data.constructor === ArrayBuffer) {
-        		var dataView = new Uint8Array(data);
-        		var dataBlob = new Blob([dataView]);
-        		var url = window.URL.createObjectURL(dataBlob);
-        		
-      		}*/
+     		// $('#picture').before('<img id="picture" style="width:225px; height:168.75px;"></img>')
+     		$("#photo-stream").prepend('<img class="photo" src=' + data + ' style="width:225px; height:168.75px;"></img>');
     	});
   	}
 }
@@ -137,6 +130,22 @@ $(document).ready(function() {
   		//$(this).animate({ backgroundColor:'#00CC00'},1000);
   		$(this).fadeTo(20,0.8);
   	})
+
+  	$('.photo').click(function (e) {
+
+  		var source = e.target.src;
+
+  		var a = document.createElement('a');
+
+  		a.download= ("photo.png");
+  		a.type = "image/png";
+  		var blob = new Blob(source, {type:a.type})
+  		a.href = (window.URL || webkitURL).createObjectURL(blob);
+  		a.click();
+
+  		//.delegate(.photo, click, photoClick);
+
+  	});
 
 	$('#connect-button').click(function() {
     	requestedPeer = $('#callto-id').val();
