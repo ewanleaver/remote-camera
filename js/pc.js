@@ -103,6 +103,13 @@ function connect(c) {
     		$('.status-area').append('<div class="event">Received photo from ' + c.peer + '</div>');
     		// document.getElementById('picture').src = data;
 
+    		var photos = $('.photo');
+    		photos.each(function() {
+    			$(this).animate({ top: '+=250px' }, 200);
+    		});
+
+    		$('.photo').animate({ top: '+=250px' }, 200);
+
      		// $('#picture').before('<img id="picture" style="width:225px; height:168.75px;"></img>')
      		$("#photo-stream").prepend('<img class="photo" src=' + data + ' style="width:225px; height:168.75px; download="photo.png"></img>');
 
@@ -172,10 +179,15 @@ $(document).ready(function() {
       		c.on('open', function() {
         		connect(c);
 
+        		$('#connect-button').show();
+        		$('#connect-button').hide();
+
       			$('#status').text("Connected");
     			$('#callto-id').hide();
-    			$('#connect-button').hide();
+    			
     			$('#call-button').show();
+    			
+    			$('#status-button').show();
 
       		});
       		c.on('error', function(err) { alert(err); });
@@ -263,6 +275,16 @@ $(document).ready(function() {
   		$('#outer-shutter').fadeTo(100,0.1); 
 
   	});
+
+  	$('#status-button').click(function () {
+
+  		if ( $('.status-area').css('visibility') == 'hidden' )
+    		$('.status-area').css('visibility','visible');
+  		else
+    		$('.status-area').css('visibility','hidden');
+  		//$('.status-area').show();
+
+  	})
 
 
 

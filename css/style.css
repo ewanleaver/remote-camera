@@ -32,11 +32,18 @@ html, body {
 	width:320px ;
 	height:480px;
 	background-color: #CCCCCC;
-	float: right;
+	opacity: 0.6;
+
 	border-radius: 10px;
 	padding-left: 10px;
 
-	display:none;
+	position: absolute;
+	left: 50%;
+	margin-left: -160px;
+	top: 50%;
+	margin-top: -240px;
+
+	visibility: hidden;
 }
 
 .connection {
@@ -109,6 +116,8 @@ html, body {
 	margin-left: -140px;
 	top: 50%;
 	margin-top: -90px;
+
+	font-family: sans-serif;
 
 }
 
@@ -218,5 +227,19 @@ html, body {
 	background-color: #22AA55;
 	display: none;
 
+}
+
+#status-button {
+
+	background-color: #999999;
+	position: absolute;
+	left: 65px;
+	bottom: 10px;
+
+	text-align:center;
+
+	display: none;
+
+	
 }
 
