@@ -234,12 +234,24 @@ html, body {
 	background-color: #999999;
 	position: absolute;
 	left: 65px;
+	bottom: 45px;
+
+	text-align:center;
+
+	display: none;
+	
+}
+
+#end-call {
+
+	background-color: #FF9999;
+	position: absolute;
+	left: 65px;
 	bottom: 10px;
 
 	text-align:center;
 
 	display: none;
-
 	
 }
 

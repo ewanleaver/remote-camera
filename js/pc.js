@@ -69,6 +69,8 @@ function step2 (call) {
 		$('.pc-ui').hide();
     	$('.connected-ui').show();
 		$('#step2').show();
+		$('#status-button').show();
+		$('#end-call').show();
 }
 
 // Handle a connection object.
@@ -186,8 +188,6 @@ $(document).ready(function() {
     			$('#callto-id').hide();
     			
     			$('#call-button').show();
-    			
-    			$('#status-button').show();
 
       		});
       		c.on('error', function(err) { alert(err); });
