@@ -54,8 +54,8 @@ function step1() {
 }
 
 function step2 () {
-		$('#step1, #step3').hide();
-		$('#step2').show();
+		//$('#step1, #step3').hide();
+		//$('#step2').show();
 	}
 
 function step3 (call) {
@@ -74,8 +74,10 @@ function step3 (call) {
 		$('#callto-id').text(call.peer);
 		call.on('close', step2);
 		//$('#step1, #step2').hide();
-		$('.unconnected-ui').hide();
-    $('.connected-ui').show();
+
+		// PC side?
+		$('.pc-ui').hide();
+    	$('.connected-ui').show();
 		$('#step3').show();
 }
 
@@ -120,8 +122,8 @@ function connect(c) {
 					call.on('close', step2);
 
     			//step3(call);
-    			$('.unconnected-ui').hide();
-    			$('.sharing-ui').show();
+    			$('.camera-ui').hide();
+    			//$('.sharing-ui').show();
     		} else if (data === "shutter") {
     			$('.status-area').append('<div class="event">Shutter request</div>');
 
@@ -209,10 +211,6 @@ function connect(c) {
 
 $(document).ready(function() {
 
-	$('#make-call').hide();
-	$('.connected-ui').hide();
-	$('.sharing-ui').hide();
-
 	// Get things started
 	step1();
 
@@ -260,7 +258,17 @@ $(document).ready(function() {
 	    });
 	});
 
-	$('#take-photo').click(function() {
+	$('#inner-shutter').mousedown(function() {
+  		//$(this).animate({ backgroundColor:'#0000CC'},1000);
+  		$('#inner-shutter').fadeTo(20,0);
+  	})
+
+  	$('#inner-shutter').mouseup(function() {
+  		//$(this).animate({ backgroundColor:'#00CC00'},1000);
+  		$('#inner-shutter').fadeTo(20,0.7);
+  	})
+
+	$('#inner-shutter').click(function() {
 
 		// For each active connection, send the message.
 	    var msg = "shutter";
@@ -284,6 +292,22 @@ $(document).ready(function() {
       		c.close();
     	});
   	});
+
+  	$('#inner-shutter').mouseenter(function() {
+
+  		$('#inner-shutter').fadeTo(100,0.7); 
+  		$('#outer-shutter').fadeTo(100,0.3); 
+
+  	});
+
+  	$('#inner-shutter').mouseleave(function() {
+
+  		$('#inner-shutter').fadeTo(100,0.3); 
+  		$('#outer-shutter').fadeTo(100,0.1); 
+
+  	});
+
+
 
   	// Goes through each active peer and calls FN on its connections.
 	function eachActiveConnection(fn) {

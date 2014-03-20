@@ -10,10 +10,22 @@
 }
 
 #video-container {
+	position: absolute;
+	left: 0px;
+	top:0px;
+	bottom: 0px;
+	right: 0px;
+	/*
 	width:640px ;
 	height:480px;
+	*/
 	background-color: #333333;
 	float: left;
+}
+
+#video-container #camera {
+	width: 100%;
+	height: 100%;
 }
 
 .status-area {
@@ -77,22 +89,80 @@
 
 }
 
-#floating {
+.camera-ui {
 
-	height: 150px;
-	width: 250px;
-	border-radius: 10px;
+	height: 120px;
+	width: 220px;
+	padding: 30px;
+	line-height: 50px;
+
+	border-radius: 20px;
 	text-align: center;
 	vertical-align: middle;
-	font-family: Tahoma;
 
 	position: absolute;
 	background-color: #DDDDDD;
 	opacity: 0.9;
 	left: 50%;
-	margin-left: -125px;
+	margin-left: -140px;
 	top: 50%;
-	margin-top: -75px;
+	margin-top: -90px;
 
+}
+
+.pc-ui {
+
+	height: 120px;
+	width: 350px;
+	padding: 30px;
+
+	border-radius: 20px;
+	text-align: center;
+	vertical-align: middle;
+
+	position: absolute;
+	background-color: #DDDDDD;
+	opacity: 0.9;
+	left: 50%;
+	margin-left: -205px;
+	top: 50%;
+	margin-top: -90px;
+
+}
+
+.connected-ui {
+
+	display: none;
+
+}
+
+#inner-shutter {
+    width:56px;
+    height:56px;
+    border-radius: 28px;
+
+    position: absolute;
+    bottom: 10%;
+    margin-bottom: -28px;
+    left: 50%;
+    margin-left: -28px;
+
+    background-color: #CC0000;
+    opacity: 0.3;
+}
+
+#outer-shutter {
+    width:70px;
+    height:70px;
+    border-radius: 35px;
+
+    position: absolute;
+    bottom: 10%;
+    margin-bottom: -35px;
+    left: 50%;
+    margin-left: -35px;
+
+    background-color: #CC0000;
+    opacity: 0.1;
 }
 
