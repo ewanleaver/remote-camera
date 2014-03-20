@@ -103,13 +103,16 @@ function connect(c) {
     		//$('.status-area').append('<div class="event">' + c.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a></div>');
     		$('.status-area').append('<div class="event">Received photo from ' + c.peer + '</div>');
     		document.getElementById('picture').src = data;
-     		// If we're getting a file, create a URL for it.
-      		if (data.constructor === ArrayBuffer) {
+
+     		$('#picture').append('<img id="picture" style="width:225px; height:168.75px;"></img>')
+     		
+
+      		/*if (data.constructor === ArrayBuffer) {
         		var dataView = new Uint8Array(data);
         		var dataBlob = new Blob([dataView]);
         		var url = window.URL.createObjectURL(dataBlob);
         		
-      		}
+      		}*/
     	});
   	}
 }

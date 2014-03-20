@@ -39,7 +39,6 @@ peer.on('call', function(call){
 peer.on('error', function(err){
 		alert(err.message);
 		// Return to step 2 if error occurs
-		step2();
 });
 
 function step1() {
@@ -49,14 +48,9 @@ function step1() {
 		//$('#my-video').prop('src', URL.createObjectURL(stream));
 
 		window.localStream = stream;
-		step2();
+
 		}, function(){ $('#step1-error').show(); });
 }
-
-function step2 () {
-		//$('#step1, #step3').hide();
-		//$('#step2').show();
-	}
 
 function step3 (call) {
 		// Hang up on an existing call if present
@@ -72,8 +66,7 @@ function step3 (call) {
 		// UI stuff
 		window.existingCall = call;
 		$('#callto-id').text(call.peer);
-		call.on('close', step2);
-		//$('#step1, #step2').hide();
+
 
 		// PC side?
 		$('.pc-ui').hide();
@@ -116,10 +109,8 @@ function connect(c) {
   				var call = peer.call(c.peer, window.localStream);
 
   				// UI stuff
-					window.existingCall = call;
-					$('#camera').prop('src', URL.createObjectURL(window.localStream));
-					//$('#callto-id').text(call.peer);
-					call.on('close', step2);
+				window.existingCall = call;
+				$('#camera').prop('src', URL.createObjectURL(window.localStream));
 
     			//step3(call);
     			$('.camera-ui').hide();

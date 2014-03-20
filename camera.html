@@ -1,5 +1,6 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<meta name="viewport" content="width=device-width, user-scalable=no">
 <head>
 	<title>Remote Camera</title>
 
@@ -22,66 +23,22 @@
 
 <body>
 
-	<div class="pure-g">
-		<div id="connection-area">
-	    	<!-- Video area -->
-	    	<div class="pure-u-2-3" id="video-container" style="float:left">
-	    		<video id="camera" autoplay></video>
-	        	<!--<video id="my-video" muted="true" autoplay></video>-->
-	      	</div>
-	      	<div class="status-area">
-	      	</div>
-	    </div>
+    <div>
 
-      	<!-- Steps -->
-      	<div class="pure-u-1-3">
-        	<!-- Get local audio/video stream -->
-        	<!--<div id="step1">
-          		<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
-          		<div id="step1-error">
-            		<p>Failed to access the webcam and microphone. Make sure to run this demo on an http server and click allow when asked for permission by the browser.</p>
-            		<a href="#" class="pure-button pure-button-error" id="step1-retry">Try again</a>
-          		</div>
-        	</div>-->
+        <div id="video-container" style="float:left">
+            <video id="camera" autoplay></video>
+        </div>
+        <div class="status-area"></div>
 
-        	<!-- Connect to target device -->
-          <div class="camera-ui" class="unconnected-ui">
+        <!-- ID dialog -->
+        <div class="camera-ui" class="unconnected-ui">
             <span style="font-size:40px; color:#777777; text-align:center">Camera ID</span><br>
             <span id="my-id" style="font-size:55px; color:#777777">...</span>
-          </div>
-<!--
-        	<div id="step2">
-        		<div style="float:left; padding-top:16px; padding-left: 20px; padding-right: 50px">
+        </div>
 
-          			<div class="unconnected-ui" style="z-index: 0; position:relative">
-          				
-          			</div>
+        <img id="picture" style="display:none; width:320px; height:240px; background-color:#DDDDDD"></img>
 
-          			<div class="sharing-ui" style="z-index: 0; position:relative">
-          				<span style="font-size:20px; color:#cc0000">Sharing Camera</span><br>
-          				<input class="button" type="button" id="end-call" value="End Call">
-          			</div>
-	          			
-	          		</div>
-	          		
-          		</div>
--->
-          		
-        	</div>
-        	<img id="picture" style="position:fixed; top:500px; left:670px; width:320px; height:240px; background-color:#DDDDDD"></img>
-      	</div>
-  	</div>
-
-
-	<!--<div id="actions">
-		<form id="send">
-	    	<input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send to selected peers">
-		</form>
-		<button id="close">Close selected connections</button>
-	</div>-->
-
-	<!--<div id="wrap"><div id="connections"><span class="filler"><strong>Disconnected.</strong></span></div>-->
-	<div class="clear"></div></div>
+    </div>
 
 </body>
 </html>
