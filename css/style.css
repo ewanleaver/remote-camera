@@ -44,6 +44,8 @@ html, body {
 	margin-top: -240px;
 
 	visibility: hidden;
+
+	overflow-y: scroll;
 }
 
 .connection {
