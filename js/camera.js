@@ -74,7 +74,8 @@ function connect(c) {
                 window.existingCall = call;
                 $('#camera-view').prop('src', URL.createObjectURL(window.localStream));
 
-                $('.camera-connection-ui').hide();
+                $('.camera-connection-ui').fadeTo(150,0);
+                //$('.camera-connection-ui').hide();
 
             } else if (data === "shutter") {
             	// If PC requests a photo...
@@ -124,12 +125,19 @@ function connect(c) {
 
         // Close the call
         c.on('close', function () {
+
+        	$('.disconnected-ui').show();
+
             $('.status-area').append('<div class="messages"><em>Peer ' + c.peer + ' has disconnected</em></div>');
             //commandBox.remove();
             if ($('.connection').length === 0) {
                 $('.filler').show();
             }
 
+            window.existingCall.close();
+
+        	$('.disconnected-ui').show();
+        	$('.disconnected-ui').fadeTo(300, 0.7);
         });
 
     } 

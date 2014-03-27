@@ -60,7 +60,7 @@ function answerCall(call) {
     $('#callto-id').text(call.peer);
 
     // PC-side UI management
-    $('.pc-connection-ui').hide();
+    $('.pc-connection-ui').fadeTo(300,0);
     $('.pc-connected-ui').show();
 
 }
@@ -104,7 +104,8 @@ function connect(c) {
             }, 200);
 
             // $('#picture').before('<img id="picture" style="width:225px; height:168.75px;"></img>')
-            $("#photo-stream").prepend('<img class="photo" src=' + data + ' style="width:225px; height:168.75px; download="photo.png"></img>');
+            $("#photo-stream").prepend('<img class="photo" src=' + data + ' style="opacity:0; width:225px; height:168.75px; download="photo.png"></img>');
+            $(".photo").fadeTo(300,1);
 
         });
     }
@@ -227,17 +228,6 @@ $(document).ready(function () {
 
     });
 
-    $('#end-call-button').click(function () {
-        window.existingCall.close();
-    });
-
-    // Close a connection.
-    $('#close').click(function () {
-        eachActiveConnection(function (c) {
-            c.close();
-        });
-    });
-
     $('.custom-button').mouseenter(function () {
         $(this).fadeTo(50, 0.8);
     });
@@ -261,16 +251,28 @@ $(document).ready(function () {
     });
 
     $('#status-button').click(function () {
+        $('.status-area').css('visibility', 'visible');
 
-        if ($('.status-area').css('visibility') == 'hidden')
-            $('.status-area').css('visibility', 'visible');
+        if ($('.status-area').css('opacity') == '0')
+            $('.status-area').fadeTo(150, 0.6);
         else
-            $('.status-area').css('visibility', 'hidden');
+            $('.status-area').fadeTo(150, 0);
         //$('.status-area').show();
 
     })
 
+    // Close the connection
+    $('#end-call-button').click(function () {
 
+        eachActiveConnection(function (c) {
+            c.close();
+        });
+
+        window.existingCall.close();
+
+        $('.disconnected-ui').show();
+        $('.disconnected-ui').fadeTo(300, 0.7);
+    });
 
     // Goes through each active peer and calls FN on its connections.
     function eachActiveConnection(fn) {
