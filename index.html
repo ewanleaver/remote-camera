@@ -1,85 +1,65 @@
+<!-- Made by Ewan Leaver -->
+
 <!DOCTYPE HTML> 
 <html lang="en"> 
 <head>
 	<title>Remote Camera</title>
 
 	<link type="text/css" rel="stylesheet" href="css/style.css">
-	<!--<link type="text/css" rel="stylesheet" href="css/bootstrap.css">-->
+
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script type="text/javascript" src="https://skyway.io/dist/0.3/peer.js"></script>
-	<!--<script type="text/javascript" src="js/bootstrap.js"></script>-->
 	<script type="text/javascript" src="js/pc.js"></script>
 </head>
 
 <body>
 
-	<div class="pure-g">
-		<div id="connection-area">
-	    	<!-- Video area -->
-	    	<div class="pure-u-2-3" id="video-container" style="float:left">
-	    		<video id="camera" autoplay></video>
-	        	<!--<video id="my-video" muted="true" autoplay></video>-->
-	      	</div>
-	      	<div class="status-area">
-	      	</div>
-	    </div>
+	<div id="connection-area">
 
-      	<!-- Steps -->
-      	<div class="ui">
-        	<!-- Get local audio/video stream -->
-        	<!--<div id="step1">
-          		<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
-          		<div id="step1-error">
-            		<p>Failed to access the webcam and microphone. Make sure to run this demo on an http server and click allow when asked for permission by the browser.</p>
-            		<a href="#" class="pure-button pure-button-error" id="step1-retry">Try again</a>
-          		</div>
-        	</div>-->
+	    <!-- Video area -->
+	    <div id="video-container" style="float:left">
+	    	<video id="camera-view" autoplay></video>
+	     </div>
 
-        	<!-- Connect to target device -->
-        	<div class="pc-ui">
-          		<span style="color:#777777; font-size:35px" id="status">Connect to device</span><br>
-            	<input type="text" id="callto-id" style="height:40px; width:100px; font-size:35px; text-align:center">
-            	<br>
-            	<div id="connect-button" class="custom-button">
-            		<span style="color:#AACCFF; font-size:20px" id="make-connection">Connect</span>
-            	</div>
-            	<div id="call-button" class="custom-button">
-            		<span style="color:#AAFFCC; font-size:20px" id="make-connection">Call</span>
-            	</div>
-        	</div>
+	</div>
 
-        	<div id="shutter" class="connected-ui">
-            	<div id="outer-shutter"></div>
-            	<div id="inner-shutter"></div>
-        	</div>
+    <div class="ui">
 
-        	<div style="position:fixed; bottom:5%; display:none">
-	        	<p>Your id: <span id="my-id" style="color:#AAAAAA">...</span></p>
-	          	<p>Share this id with others so they can connect with you.</p>
-	        </div>
-
-	        <div id="photo-stream" class="connected-ui"></div>
-
-	        <div id="status-button" class="custom-button" class="connected-ui">
-	        	<span style="color:#555555; font-size:20px">Status</span>
-	        </div>
-	        <div id="end-call" class="custom-button" class="connected-ui">
-	        	<span style="color:#555555; font-size:20px">End</span>
-	        </div>
-
-      	</div>
-  	</div>
+        <!-- Connection UI -->
+        <div class="pc-connection-ui">
+        	<span style="color:#777777; font-size:35px" id="status">Connect to device</span><br>
+           	<input type="text" id="callto-id" style="height:40px; width:100px; font-size:35px; text-align:center">
+           	<br>
+           	<div id="connect-button" class="custom-button">
+           		<span style="color:#AACCFF; font-size:20px">Connect</span>
+           	</div>
+           	<div id="call-button" class="custom-button">
+           		<span style="color:#AAFFCC; font-size:20px">Call</span>
+           	</div>
+        </div>
 
 
-	<!--<div id="actions">
-		<form id="send">
-	    	<input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send to selected peers">
-		</form>
-		<button id="close">Close selected connections</button>
-	</div>-->
+	    <!-- In-call UI -->
+	    <div class="pc-connected-ui">
+	      	<!-- Shutter button -->
+	       	<div id="shutter">
+	           	<div id="outer-shutter"></div>
+	           	<div id="inner-shutter"></div>
+	       	</div>
 
-	<!--<div id="wrap"><div id="connections"><span class="filler"><strong>Disconnected.</strong></span></div>-->
-	<div class="clear"></div></div>
+	       	<div id="photo-stream"></div>
+
+	       	<div class="status-area"></div>
+
+		    <div id="status-button" class="custom-button">
+		       	<span style="color:#555555; font-size:20px">Status</span>
+		    </div>
+		    <div id="end-call-button" class="custom-button">
+		      	<span style="color:#555555; font-size:20px">End</span>
+		    </div>
+		</div>
+
+    </div>
 
 </body>
 </html>

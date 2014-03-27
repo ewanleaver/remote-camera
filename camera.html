@@ -1,3 +1,5 @@
+<!-- Made by Ewan Leaver -->
+
 <!DOCTYPE HTML> 
 <html lang="en"> 
 <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -5,29 +7,31 @@
 	<title>Remote Camera</title>
 
 	<link type="text/css" rel="stylesheet" href="css/style.css">
-	<!--<link type="text/css" rel="stylesheet" href="css/bootstrap.css">-->
+
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script type="text/javascript" src="https://skyway.io/dist/0.3/peer.js"></script>
-	<!--<script type="text/javascript" src="js/bootstrap.js"></script>-->
 	<script type="text/javascript" src="js/camera.js"></script>
-
 </head>
 
 <body>
 
     <div>
 
+        <!-- Video area -->
         <div id="video-container" style="float:left">
-            <video id="camera" autoplay></video>
+            <video id="camera-view" autoplay></video>
         </div>
+
+        <!-- DISUSED - see PC-side -->
         <div class="status-area"></div>
 
         <!-- ID dialog -->
-        <div class="camera-ui" class="unconnected-ui">
+        <div class="camera-connection-ui" class="unconnected-ui">
             <span style="font-size:40px; color:#777777; text-align:center">Camera ID</span><br>
             <span id="my-id" style="font-size:55px; color:#777777">...</span>
         </div>
 
+        <!-- Necessary for sending photos to PC -->
         <img id="picture" style="display:none; width:320px; height:240px; background-color:#DDDDDD"></img>
 
     </div>
