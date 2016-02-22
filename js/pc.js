@@ -2,8 +2,7 @@
 //  Made by Ewan Leaver
 // #####################
 
-//var SKYWAY_APIKEY = "4362638a-9e84-11e3-9939-47b360702393"; 
-var SKYWAY_APIKEY = "b0a007fa-af27-11e3-b735-7312b2da93b5";
+var SKYWAY_APIKEY = "8f4f7ea3-6341-483a-8ab1-f36865df0299";
 
 // Media compatability
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
